@@ -12,12 +12,16 @@ Visualizing System Resources
 1. 먼저 [Git](http://git-scm.com/download/win) 을 설치 합니다. 파란색 글자를 누르면 자동으로 설치 페이지로 이동합니다.
 2. Git 이 설치 되었다는 가정 하에 설명 합니다.
 
-# 사용방법 - windows [ 2단계 프로젝트 다운받기 ]
+# 사용방법 - windows [ 2-1단계 프로젝트 다운받기 ]
 1. windows + R 키를 누릅니다.
 2. cmd 라고 입력 후 Enter 키를 누릅니다.
 3. 보통 C:\Users\[사용자명] 으로 나옵니다. 여러분이 찾기 쉽고 접근하기 쉽게 폴더(디렉토리)를 하나 만들겠습니다.
 4. cd c:\ 라고 입력 후 Enter 키를 누릅니다.
 5. c:\> 라고 바뀌었고 위의 1번에서 Git 을 설치 하였다면 git clone https://github.com/minisv/VSR.git 라고 입력 후 Enter 키를 누릅니다. 그럼 지금 보고 계시는 이 프로젝트를 다운로드 받습니다.
+
+# 사용방법 - windows [ 2-2단계 git 없이 다운받기 ]
+1. [다운로드](https://github.com/minisv/VSR/archive/refs/heads/main.zip) 를 누르면 zip 파일을 받습니다.
+2. c 드라이브에 vsr 폴더를 생성하고 main.zip 파일을 넣고 압축을 풀어줍니다.
 
 # 사용방법 - windows [ 3단계 NPM 설치하기 ]
 1. 이 프로젝트는 [nodejs](https://nodejs.org/ko/) 를 이용하여 만들어 졌습니다. 파란색 글자를 누르면 자동으로 설치 페이지로 이동합니다.
