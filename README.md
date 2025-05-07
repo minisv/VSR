@@ -22,6 +22,7 @@ Visualizing System Resources
 # 사용방법 - windows [ 2-2단계 git 없이 다운받기 ]
 1. [다운로드](https://github.com/minisv/VSR/archive/refs/heads/main.zip) 를 누르면 zip 파일을 받습니다.
 2. c 드라이브에 vsr 폴더를 생성하고 main.zip 파일을 넣고 압축을 풀어줍니다.
+3. 다만, 압축이 main.zip 이고, 압축을 풀면 VSR-main 이라는 폴더 아래에 압축이 풀리므로 vsr 폴더에 압축푼 VSR-main 폴더 안의 파일들을 모두 복사하여 넣어주세요. 
 
 # 사용방법 - windows [ 3단계 NPM 설치하기 ]
 1. 이 프로젝트는 [nodejs](https://nodejs.org/ko/) 를 이용하여 만들어 졌습니다. 파란색 글자를 누르면 자동으로 설치 페이지로 이동합니다.
