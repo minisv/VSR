@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시스템 사용 현황 모니터</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div class="dashboard">
+        <div class="metric-card">
+            <h2>CPU Usage</h2>
+            <div class="gauge-container">
+                <div class="gauge-wrapper">
+                    <svg class="gauge-svg" viewBox="0 0 100 100">
+                        <circle class="gauge-background" cx="50" cy="50" r="40"></circle>
+                        <circle class="gauge-progress" id="cpu-progress" cx="50" cy="50" r="40" 
+                                stroke-dasharray="0 251.2" stroke-dashoffset="0"></circle>
+                    </svg>
+                    <div class="gauge-center">
+                        <div class="gauge-value" id="cpu-value">0%</div>
+                        <div class="gauge-label">사용률</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <h2>Memory Usage</h2>
+            <div class="gauge-container">
+                <div class="gauge-wrapper">
+                    <svg class="gauge-svg" viewBox="0 0 100 100">
+                        <circle class="gauge-background" cx="50" cy="50" r="40"></circle>
+                        <circle class="gauge-progress" id="mem-progress" cx="50" cy="50" r="40" 
+                                stroke-dasharray="0 251.2" stroke-dashoffset="0"></circle>
+                    </svg>
+                    <div class="gauge-center">
+                        <div class="gauge-value" id="mem-value">0%</div>
+                        <div class="gauge-label">사용률</div>
+                    </div>
+                </div>
+            </div>
+            <div class="details">
+                <div class="detail-item">
+                    <span class="detail-label">전체:</span>
+                    <span class="detail-value" id="mem-total">로드 중...</span> GB
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">사용 중:</span>
+                    <span class="detail-value" id="mem-used">로드 중...</span> GB
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">사용 가능:</span>
+                    <span class="detail-value" id="mem-free">로드 중...</span> GB
+                </div>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <h2 id="drive-title">C Drive Usage</h2>
+            <div class="gauge-container">
+                <div class="gauge-wrapper">
+                    <svg class="gauge-svg" viewBox="0 0 100 100">
+                        <circle class="gauge-background" cx="50" cy="50" r="40"></circle>
+                        <circle class="gauge-progress" id="drive-progress" cx="50" cy="50" r="40" 
+                                stroke-dasharray="0 251.2" stroke-dashoffset="0"></circle>
+                    </svg>
+                    <div class="gauge-center">
+                        <div class="gauge-value" id="drive-value">0%</div>
+                        <div class="gauge-label">사용률</div>
+                    </div>
+                </div>
+            </div>
+            <div class="details">
+                <div class="detail-item" id="drive-fs-mount"></div>
+                <div class="detail-item">
+                    <span class="detail-label">전체:</span>
+                    <span class="detail-value" id="drive-total">로드 중...</span> GB
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">사용 중:</span>
+                    <span class="detail-value" id="drive-used">로드 중...</span> GB
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">사용 가능:</span>
+                    <span class="detail-value" id="drive-free">로드 중...</span> GB
+                </div>
+            </div>
+            <p id="drive-message" class="alert-message"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+  let lastData = null;
+
+  async function fetchSystemInfo() {
+    try {
+      const response = await fetch('/api/system-info');
+      if (!response.ok) {
+        throw new Error(`HTTP 오류! 상태: ${response.status}`);
+      }
+      const data = await response.json();
+      
+      // 데이터가 변경된 경우에만 UI 업데이트
+      if (!lastData || 
+          JSON.stringify(data.cpuUsage) !== JSON.stringify(lastData.cpuUsage) || 
+          JSON.stringify(data.memory) !== JSON.stringify(lastData.memory) ||
+          JSON.stringify(data.drive) !== JSON.stringify(lastData.drive)) {
+        
+        updateUI(data);
+        lastData = data;
+      }
+    } catch (error) {
+      console.error("시스템 정보 업데이트 실패:", error);
+    }
+  }
+
+  function getStatusColor(percentage) {
+    if (percentage >= 85) return "#e74c3c"; // 빨간색 (경고)
+    if (percentage >= 70) return "#f39c12"; // 오렌지색 (주의)
+    return "#3498db"; // 파란색 (정상)
+  }
+
+  function updateGauge(id, percentage) {
+    if (percentage === undefined || isNaN(percentage)) {
+      percentage = 0;
+    }
+    
+    // 색상 결정
+    const color = getStatusColor(percentage);
+    
+    // SVG 원형 차트 업데이트
+    const progressElement = document.getElementById(`${id}-progress`);
+    const valueElement = document.getElementById(`${id}-value`);
+    
+    // 원의 둘레 계산: 2 * π * 반지름 (여기서는 반지름이 40)
+    const circumference = 2 * Math.PI * 40;
+    
+    // 비율에 따른 dasharray 계산 (정확한 비율 표현)
+    const dashArray = (percentage / 100) * circumference;
+    const dashOffset = 0;
+    
+    // SVG 속성 업데이트
+    progressElement.style.stroke = color;
+    progressElement.setAttribute('stroke-dasharray', `${dashArray} ${circumference}`);
+    
+    // 값 업데이트
+    valueElement.textContent = `${percentage}%`;
+    valueElement.style.color = color;
+  }
+
+  function updateUI(data) {
+    // CPU 정보 업데이트
+    updateGauge("cpu", data.cpuUsage);
+
+    // 메모리 정보 업데이트
+    updateGauge("mem", data.memory.usagePercentage);
+    document.getElementById('mem-total').textContent = data.memory.totalGB;
+    document.getElementById('mem-used').textContent = data.memory.usedGB;
+    document.getElementById('mem-free').textContent = data.memory.freeGB;
+
+    // 드라이브 정보 업데이트
+    if (data.drive) {
+      if (data.drive.notFound && data.drive.message) {
+        document.getElementById('drive-title').textContent = "드라이브 정보";
+        document.getElementById('drive-message').textContent = data.drive.message;
+        document.getElementById('drive-message').classList.add('warning');
+      } else if (data.drive.fs) {
+        document.getElementById('drive-title').textContent = `${data.drive.mount || data.drive.fs} Drive Usage`;
+        document.getElementById('drive-message').textContent = '';
+        document.getElementById('drive-message').classList.remove('warning');
+      }
+
+      if (data.drive.totalGB !== undefined) {
+        document.getElementById('drive-fs-mount').textContent = `경로: ${data.drive.fs} (마운트: ${data.drive.mount || 'N/A'})`;
+        document.getElementById('drive-total').textContent = data.drive.totalGB;
+        document.getElementById('drive-used').textContent = data.drive.usedGB;
+        document.getElementById('drive-free').textContent = data.drive.freeGB;
+        updateGauge("drive", data.drive.usagePercentage);
+      } else if(data.drive.message && !data.drive.totalGB) { // 드라이브를 아예 못찾은 경우
+        document.getElementById('drive-fs-mount').textContent = '';
+        document.getElementById('drive-total').textContent = 'N/A';
+        document.getElementById('drive-used').textContent = 'N/A';
+        document.getElementById('drive-free').textContent = 'N/A';
+        updateGauge("drive", 0);
+      }
+    } else {
+      document.getElementById('drive-title').textContent = "Drive Usage";
+      document.getElementById('drive-message').textContent = "드라이브 정보를 가져올 수 없습니다.";
+      document.getElementById('drive-message').classList.add('warning');
+    }
+  }
+
+  // 초기 데이터 가져오기
+  fetchSystemInfo();
+  
+  // 2초마다 정보 업데이트
+  setInterval(fetchSystemInfo, 2000);
+</script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+/* public/style.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 300px; /* 최대 가로 크기 300px로 제한 */
+    min-height: 200px;
+    max-height: 800px; /* 최대 세로 크기 800px로 제한 */
+    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin: 0 0 15px 0;
+    font-size: 1.4em;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.metric-card {
+    background-color: #f9f9f9;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.metric-card h2 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+/* 원형 차트 스타일 */
+.gauge-container {
+    display: flex;
+    justify-content: center;
+    margin: 5px 0 10px;
+}
+
+.gauge-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.gauge-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg); /* 시작점을 12시 방향으로 */
+}
+
+.gauge-background {
+    fill: none;
+    stroke: #e0e0e0;
+    stroke-width: 12;
+}
+
+.gauge-progress {
+    fill: none;
+    stroke: #3498db;
+    stroke-width: 12;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.5s ease, stroke 0.5s ease;
+}
+
+.gauge-center {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.gauge-value {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #3498db;
+}
+
+.gauge-label {
+    font-size: 0.8em;
+    color: #7f8c8d;
+}
+
+/* 상세 정보 스타일 */
+.details {
+    margin-top: 10px;
+    font-size: 0.85em;
+}
+
+.detail-item {
+    margin: 3px 0;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed #eee;
+    padding-bottom: 3px;
+}
+
+.detail-label {
+    color: #7f8c8d;
+    font-weight: 600;
+}
+
+.detail-value {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* 알림 메시지 스타일 */
+.alert-message {
+    margin-top: 8px;
+    font-style: italic;
+    color: #e67e22;
+    text-align: center;
+    font-size: 0.85em;
+}
+
+.warning {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+/* 항상 모바일 최적화된 디자인으로 고정 */
+@media (max-width: 400px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .metric-card {
+        padding: 10px;
+    }
+    
+    .gauge-wrapper {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .gauge-value {
+        font-size: 1.3em;
+    }
+}
