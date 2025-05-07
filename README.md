@@ -26,7 +26,7 @@ Visualizing System Resources
 
 # 사용방법 - windows [ 4단계 프로젝트 실행하기 ]
 1. 위의 2단계에서 c:\> 라고 된 상태라면 cd vsr 을 입력 후 Enter 키를 누릅니다.
-2. c:\vsr> 상태라면 npm install 입력 후 Enter 키를 누릅니다.
-3. c:\vsr> 에서 node server.js 입력 후 Enter 키를 누릅니다. 그러면 서버가 실행 됩니다.
+2. vsr 폴더에서 start.bat 를 실행해야 합니다.
+3. c:\vsr\> 상태라면 ./start.bat 라고 입력 후 Enter 키를 누릅니다. 자동으로 서버 프로그램이 설치되어 구성된 후 서버가 시작 됩니다.
 4. 웹 브라우저 (크롬 등) 를 열고 주소창에 http://localhost:3000 를 입력합니다.
 5. 필요하다면 OBS 에 소스 목록 하단에 + 버튼을 눌러 브라우저 에서 URL 에 http://localhost:3000/index.html 를 입력 후 최소 크기는 너비 200 에 높이 720 으로 맞춰 주세요. (최소 크기 이므로 적절하게 크기 조절 해주세요)  
